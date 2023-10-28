@@ -12,14 +12,14 @@ pipeline{
                 sh 'docker build -t kushaggarwal/nodejs-webapp .'
             }
         }
-        stage('Test'){
+        stage('Login'){
             steps{
-                echo "This is a test stage"
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' 
             }
         }
-        stage('Deploy'){
+        stage('Push'){
             steps{
-                echo "This is a deploy stage"
+                sh 'docker push kushaggarwal/nodejs-webapp'
             }
         }
         stage('Monitor'){
