@@ -1,9 +1,15 @@
 pipeline{
     agent any
+    options{
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+    }
+    environment{
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    }
     stages{
         stage('Build'){
             steps{
-                echo "This is a build stage"
+                sh 'docker build -t kushaggarwal/nodejs-webapp .'
             }
         }
         stage('Test'){
