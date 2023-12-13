@@ -1,7 +1,7 @@
 pipeline{
     agent any
     options{
-        buildDiscarder(logRotator(numToKeepStr: '5'))
+        buildDiscarder(logRotator(numToKeepStr:'5'))
     }
     environment{
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
@@ -9,17 +9,20 @@ pipeline{
     stages{
         stage('Build'){
             steps{
-                sh 'docker build -t kushaggarwal/nodejs-webapp .'
+                echo "Building an docker image for our web application"
+                sh 'docker build -t kushaggarwal/application .'
             }
         }
         stage('Login'){
             steps{
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' 
+                echo "Logging into dockerhub account"
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
         stage('Push'){
             steps{
-                sh 'docker push kushaggarwal/nodejs-webapp'
+                echo "Pushing the docker image to registary"
+                sh "docker push kushaggarwal/application"
             }
         }
         stage('Monitor'){
