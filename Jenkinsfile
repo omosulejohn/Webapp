@@ -30,5 +30,10 @@ pipeline{
                 echo "This is a monitor stage"
             }
         }
+        stage('Last Stage'){
+            steps{
+                echo "This is a last stage"
+            }
+        }
     }
 }
