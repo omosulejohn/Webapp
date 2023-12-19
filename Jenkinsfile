@@ -25,9 +25,10 @@ pipeline{
                 sh "docker push kushaggarwal/nodejs-app"
             }
         }
-        stage('Monitor'){
+        stage('Run the docker images'){
             steps{
-                echo "This is a monitor stage"
+                echo "Running the docker image"
+                sh "docker run -d -p 8000:3000 kushaggarwal/nodejs-app"
             }
         }
     }
