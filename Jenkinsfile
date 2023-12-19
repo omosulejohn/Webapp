@@ -1,5 +1,5 @@
 pipeline{
-    agent any
+    agent any 
     options{
         buildDiscarder(logRotator(numToKeepStr:'5'))
     }
@@ -7,27 +7,28 @@ pipeline{
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
     stages{
-        stage('Build'){
+        stage('Build docker image'){
             steps{
-                echo "Building an docker image for our web application"
+                echo "Building the docker image from Dockerfile in src directory"
                 sh 'docker build -t kushaggarwal/nodejs-app .'
             }
         }
-        stage('Login'){
+        stage('Login into the dockerhub account'){
             steps{
-                echo "Logging into dockerhub account"
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                echo "Logging into dockerhub account for pushing the image"
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
             }
+
         }
-        stage('Push'){
+        stage('Push docker image on dockerhub online'){
             steps{
-                echo "Pushing the docker image to registary"
+                echo "Execute the pushing command for image onto dockerhub"
                 sh "docker push kushaggarwal/nodejs-app"
             }
         }
-        stage('Run the docker images'){
+        stage('Run the docker image on the EC2 instance'){
             steps{
-                echo "Running the docker image"
+                echo "Running the docker image on EC2 instance"
                 sh "docker run -d -p 8000:3000 kushaggarwal/nodejs-app"
             }
         }
