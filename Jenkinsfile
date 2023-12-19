@@ -10,7 +10,7 @@ pipeline{
         stage('Build'){
             steps{
                 echo "Building an docker image for our web application"
-                sh 'docker build -t kushaggarwal/application .'
+                sh 'docker build -t kushaggarwal/nodejs-app .'
             }
         }
         stage('Login'){
@@ -22,7 +22,7 @@ pipeline{
         stage('Push'){
             steps{
                 echo "Pushing the docker image to registary"
-                sh "docker push kushaggarwal/application"
+                sh "docker push kushaggarwal/nodejs-app"
             }
         }
         stage('Monitor'){
